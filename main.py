@@ -8,6 +8,7 @@ from langchain_ollama import OllamaEmbeddings, ChatOllama
 from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
 
 
-
+class model: 
+    
 
 
