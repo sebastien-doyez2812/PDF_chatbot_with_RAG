@@ -36,7 +36,7 @@ def query(query_text:str):
 
     results = db.similarity_search_with_score(query_text, k=NB_CONTEXTS)
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
-    print(context_text)
+    #print(context_text)
 
 
     prompt_template = ChatPromptTemplate.from_template(PROMPT)
