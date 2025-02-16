@@ -1,54 +1,21 @@
-import argparse
-from embedding import get_embedding_function
-from langchain.vectorstores.chroma import Chroma
-from langchain.prompts import ChatPromptTemplate
-from langchain_community.llms.ollama import Ollama
+import subprocess
+import webbrowser
+import time
 
 
-CHROMA = "chroma"
-NB_CONTEXTS = 5
+populate = input("Do you want to repopulate the Vector Database? [y/n]\n -> ").lower().strip()
+if populate == "y":
+    subprocess.run(["python", "load_docs_VDB.py", "--reset"], capture_output=True)
+elif populate !='n':
+    raise ValueError("Please answer with n or y...")
 
-PROMPT = """
-Answer the question based only on this following context:
-{context}
+print("[i] Launching the backend...")
+subprocess.Popen(["python",  "backend.py"])
+print("[+] Backend Ready.\n\n[i] Launching the frontend in...")
 
-Answer the question based on the above context:{question}
+for i in range(3):
+    print(3 - i)
+    time.sleep(1)
 
-"""
-
-
-
-def main():
-
-    # To get the query text (from the argument arg1 (python main.py arg1))
-    parser = argparse.ArgumentParser()
-    parser.add_argument("query_text", type=str, help= "This is the query text")
-    args = parser.parse_args()
-
-    query_text = args.query_text
-    query(query_text)
-
-
-
-def query(query_text:str):
-    embd = get_embedding_function()
-    db =  Chroma(persist_directory = CHROMA, embedding_function= embd)
-
-    results = db.similarity_search_with_score(query_text, k=NB_CONTEXTS)
-    context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
-    #print(context_text)
-
-
-    prompt_template = ChatPromptTemplate.from_template(PROMPT)
-    prompt = prompt_template.format(context=context_text, question= query_text)
-
-    model = Ollama(model="gemma")
-    rep = model.invoke(prompt)
-
-    sources = [doc.metadata.get("id", None) for doc, _score in results]
-    formatted_response = f"Response: {rep}\nSOurces:{sources}"
-    print(formatted_response)
-    return rep
-
-if __name__ == "__main__":
-    main()
+webbrowser.open(f"file://C:/Users/doyez/Documents/PDF_chatbot_with_RAG/www/main_page.html")
+print("[+] AI Agent ready.")
