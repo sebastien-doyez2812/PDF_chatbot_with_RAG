@@ -3,6 +3,8 @@ from embedding import get_embedding_function
 from langchain.vectorstores.chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
 from langchain_community.llms.ollama import Ollama
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 
 CHROMA = "chroma"
@@ -16,7 +18,8 @@ Answer the question based on the above context:{question}
 
 """
 
-
+app = Flask(__name__)
+CORS(app)
 
 def main():
 
@@ -46,9 +49,32 @@ def query(query_text:str):
     rep = model.invoke(prompt)
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
-    formatted_response = f"Response: {rep}\nSOurces:{sources}"
-    print(formatted_response)
+    #formatted_response = f"Response: {rep}\nSOurces:{sources}"
+    #formatted_response = {"response":rep, "sources": sources}
+    
+    
+    formatted_response = {
+    "response": rep,
+    "sources": sources if sources else []  # Toujours un tableau
+    }
+
+    print(f"\n\n_____\n\n{formatted_response}")
     return rep
 
+
+
+@app.route("/ask", methods=["POST"])
+def ask():
+    data = request.get_json()
+    question = data.get("question","")
+
+    if not question.strip():
+        return jsonify({"error": "Empty question"}), 400
+
+    response = query(question)
+    print("\n\n\nvoici la réponse", jsonify(response))
+    return jsonify(response)
+
 if __name__ == "__main__":
-    main()
+    #main()
+    app.run(host="0.0.0.0", port = 5000, debug=True)
