@@ -22,6 +22,12 @@ python main.py
 ```
 This command will launch the backend and serve the frontend.
 
+### Test the Agent:
+To test the agent (ideal for TDD), please use:
+```bash
+pytest test_agent.py
+```
+
 ### Frontend
 A simple HTML page is included in the `www` folder to interact with the AI agent.
 

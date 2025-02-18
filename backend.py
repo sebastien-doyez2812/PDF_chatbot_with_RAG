@@ -11,10 +11,10 @@ CHROMA = "chroma"
 NB_CONTEXTS = 5
 
 PROMPT = """
-Answer the question based only on this following context:
+This is some informations you need to work with:
 {context}
 
-Answer the question based on the above context:{question}
+Answer the question based on the above informations:{question}
 
 """
 
@@ -49,13 +49,10 @@ def query(query_text:str):
     rep = model.invoke(prompt)
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
-    #formatted_response = f"Response: {rep}\nSOurces:{sources}"
-    #formatted_response = {"response":rep, "sources": sources}
-    
-    
+       
     formatted_response = {
     "response": rep,
-    "sources": sources if sources else []  # Toujours un tableau
+    "sources": sources if sources else []  
     }
 
     print(f"\n\n_____\n\n{formatted_response}")
