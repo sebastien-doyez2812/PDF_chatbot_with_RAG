@@ -1,6 +1,6 @@
 import pytest
 from langchain_community.llms.ollama import Ollama
-from main import query
+from backend import query
 
 
 EVAL_PROMPT_TEMPLATE= """
