@@ -32,7 +32,7 @@ pytest test_agent.py
 A simple HTML page is included in the `www` folder to interact with the AI agent.
 
 ## Links
-- 📺 **YouTube Tutorial:** [Watch Here](https://www.youtube.com/watch?v=9Na8DO4MnDM&t=7s)
+- 📺 **YouTube Tutorial:** [Watch Here](https://www.youtube.com/watch?v=9Na8DO4MnDM&t)
 - 💼 **LinkedIn:** [Sébastien Doyez](https://www.linkedin.com/in/s%C3%A9bastien-doyez-042604252/)
 
 ---
